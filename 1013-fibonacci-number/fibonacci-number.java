@@ -1,11 +1,17 @@
 class Solution {
     public int fib(int n) {
         if(n <= 1) return n;
-        return f(n);
+        
+        int[] memo = new int[n+1];
+        Arrays.fill(memo , -1);
+
+        return f(n , memo);
     }
-      int f(int n){
+      int f(int n , int[] memo){
         if(n <= 1) return n;
 
-        return f(n-1) + f(n-2);
+        if(memo[n] != -1) return memo[n];
+
+        return memo[n] = f(n-1,memo) + f(n-2,memo);
       }
 }
