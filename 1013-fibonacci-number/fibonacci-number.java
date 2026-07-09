@@ -1,14 +1,17 @@
 class Solution {
+    int[] memo;
     public int fib(int n) {
+        if(n<=1) return n;
+        memo = new int[n+1];
+        Arrays.fill(memo , -1);
+
+        return f(n);
+    }
+    int f(int n){
         if(n <= 1) return n;
 
-        int prev2 =0 , prev1 =1;
+        if(memo[n] != -1) return memo[n];
 
-        for(int i = 2 ;i <= n ; i++){
-            int cur  = prev1 + prev2;
-            prev2 = prev1;
-            prev1 = cur;
-        }
-        return prev1;  
-      }
+        return memo[n] = f(n-1)+f(n-2);
+    }
 }
