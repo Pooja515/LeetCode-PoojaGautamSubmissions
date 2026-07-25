@@ -2,8 +2,7 @@ class Solution {
 
     public int networkDelayTime(int[][] times,int n,int k) {
         // 1. Build directed adjacency list
-        List<List<int[]>> adj =
-                new ArrayList<>();
+        List<List<int[]>> adj = new ArrayList<>();
 
         for (int i = 0; i <= n; i++) {
             adj.add(new ArrayList<>());
@@ -23,6 +22,7 @@ class Solution {
         int[] distance = new int[n + 1];
 
         Arrays.fill(distance,Integer.MAX_VALUE );
+
         distance[k] = 0;
         // 3. Min-heap
         // {distance, node}
@@ -40,11 +40,7 @@ class Solution {
             int currentNode =current[1];
 
 
-            if (
-                    currentDistance
-                    >
-                    distance[currentNode]
-            ) {
+            if (currentDistance > distance[currentNode]) {
                 continue;
             }
 
