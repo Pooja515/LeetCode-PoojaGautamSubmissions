@@ -1,81 +1,51 @@
 class Solution {
-
-    public int networkDelayTime(int[][] times,int n,int k) {
-        // 1. Build directed adjacency list
+    public int networkDelayTime(int[][] times, int n, int k) {
         List<List<int[]>> adj = new ArrayList<>();
-
-        for (int i = 0; i <= n; i++) {
+        for(int i =0 ;i <=n;i++){
             adj.add(new ArrayList<>());
         }
 
-        for (int[] time : times) {
+        for(int[] time : times){
+            int u = time[0];
+            int v = time[1];
+            int wt = time[2];
 
-            int source = time[0];
+            adj.get(u).add(new int[] {v,wt});
 
-            int destination =time[1];
-
-            int travelTime =time[2];
-
-            adj.get(source).add( new int[]{destination,travelTime});
         }
-        // 2. Distance array
-        int[] distance = new int[n + 1];
+        int[] distance = new int[n+1];
+        Arrays.fill(distance,(int) 1e9);
+        distance[k] =0;
 
-        Arrays.fill(distance,Integer.MAX_VALUE );
+        PriorityQueue<int[]> pq= new PriorityQueue<>((a,b)->Integer.compare(a[0],b[0]));
 
-        distance[k] = 0;
-        // 3. Min-heap
-        // {distance, node}
-        PriorityQueue<int[]> pq =new PriorityQueue<>((a, b) ->Integer.compare(a[0],b[0]));
+        pq.offer(new int[] {0,k});
 
-        pq.offer(new int[]{0,k});
-        // 4. Dijkstra
+        while(!pq.isEmpty()){
+            int[] curr = pq.poll();
+            int currDistance  = curr[0];
+            int node = curr[1];
 
-        while (!pq.isEmpty()) {
+            if(currDistance > distance[node]) continue;
 
-            int[] current =pq.poll();
+            for(int[] neighbors : adj.get(node)){
+                int neighbor = neighbors[0];
+                int w = neighbors[1];
 
-            int currentDistance =current[0];
+                int newDistance = currDistance + w;
 
-            int currentNode =current[1];
-
-
-            if (currentDistance > distance[currentNode]) {
-                continue;
-            }
-
-
-            for (int[] edge :adj.get(currentNode)) {
-
-                int neighbor =edge[0];
-
-                int weight =edge[1];
-
-
-                int newDistance =currentDistance+ weight;
-
-
-                if (newDistance < distance[neighbor]) {
-
-                    distance[neighbor] =newDistance;
-
-                    pq.offer(new int[]{newDistance,neighbor});
+                if(newDistance < distance[neighbor]){
+                    distance[neighbor] = newDistance;
+                    pq.offer(new int[] {newDistance , neighbor});
                 }
-            }
+            } 
         }
-        // 5. Find the time when everyone receives it
-    
-        int answer = 0;
-
-        for (int node = 1;node <= n;node++) {
-
-            if (distance[node] == Integer.MAX_VALUE) {
-                return -1;
-            }
-
-            answer = Math.max(answer,distance[node]);
+        int maxi =0;
+        for(int i =1 ;i <=n ;i++){
+          if(distance[i] == (int) 1e9) return -1;
+          maxi= Math.max(maxi,distance[i]);
         }
 
-        return answer;
+        return maxi;
     }
 }
