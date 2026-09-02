@@ -1,26 +1,27 @@
 class Solution {
-
+    int[][] memo;
     public int numDistinct(String s, String t) {
-        int m = s.length() , n= t.length();
-        if(m <n) return 0;
+       int m= s.length() , n= t.length();
+       if(n==0) return 0;
+       if(m < n) return 0;
 
-        int[][] dp= new int[m+1][n+1];
+       memo = new int[m][n];
+       for(int[] rows: memo){
+          Arrays.fill(rows,-1);
+       }
 
-        for(int ind1 =0 ;ind1 <= m;ind1++){
-            dp[ind1][0] = 1;
+       return f(m-1,n-1,s,t); 
+    }
+    int f(int i,int j,String s , String t){
+        if(j<0) return 1;
+        if(i<0) return 0;
+
+        if(memo[i][j] != -1) return memo[i][j];
+
+        // take
+        if(s.charAt(i) == t.charAt(j)){
+            return memo[i][j]= f(i-1,j-1,s,t) + f(i-1,j,s,t);
         }
-
-        for(int ind1=1;ind1 <= m; ind1++){
-            for(int ind2 = 1 ; ind2 <= n ; ind2++){
-
-               if(s.charAt(ind1-1) == t.charAt(ind2-1)){
-                    dp[ind1][ind2]= dp[ind1-1][ind2-1] + dp[ind1-1][ind2];
-               }
-                else{
-                      dp[ind1][ind2]=dp[ind1-1][ind2];
-               }
-            }
-        }
-    return dp[m][n];
+        return memo[i][j]= f(i-1,j,s,t);
     }
 }
