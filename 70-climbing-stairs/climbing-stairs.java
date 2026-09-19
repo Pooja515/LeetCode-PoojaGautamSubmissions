@@ -1,20 +1,17 @@
 class Solution {
-    int[] memo;
+
     public int climbStairs(int n) {
-        if(n <= 2) return n;
-        memo= new int[n+1];
+        if (n == 1 || n == 2)
+            return n;
+        int[] dp = new int[n + 1];
+        dp[0] = 1;
+        dp[1] = 1;
 
-        Arrays.fill(memo,-1);
-
-        return f(n);
-    }
-    int f(int i){
-        if(i<=2) return i;
-
-        if(memo[i] != -1) return memo[i];
-
-        int climb1 = f(i-1);
-        int climb2 = f(i-2);
-        return memo[i] = climb1 + climb2;
+        for (int i = 2; i <= n; i++) {
+            int climb1 = dp[i - 1];
+            int climb2 = dp[i - 2];
+            dp[i] = climb1 + climb2;
+        }
+        return dp[n];
     }
 }
