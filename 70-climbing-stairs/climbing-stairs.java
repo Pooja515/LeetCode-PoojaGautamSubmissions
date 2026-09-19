@@ -3,15 +3,15 @@ class Solution {
     public int climbStairs(int n) {
         if (n == 1 || n == 2)
             return n;
-        int[] dp = new int[n + 1];
-        dp[0] = 1;
-        dp[1] = 1;
+     
+        int p2 = 1 , p1 = 1;
 
         for (int i = 2; i <= n; i++) {
-            int climb1 = dp[i - 1];
-            int climb2 = dp[i - 2];
-            dp[i] = climb1 + climb2;
+      
+            int cur = p2+p1;
+            p2 = p1;
+            p1 = cur;
         }
-        return dp[n];
+        return p1;
     }
 }
