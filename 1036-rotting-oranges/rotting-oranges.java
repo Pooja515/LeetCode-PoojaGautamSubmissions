@@ -29,7 +29,7 @@ class Solution {
 
             for (int i = 0; i < size; i++) {
                 int[] cur = q.poll();
-            int r = cur[0], c = cur[1];
+                int r = cur[0], c = cur[1];
                 for (int[] d : dir) {
                     int newr = r + d[0], newc = c + d[1];
                     if (newr >= 0 && newr < m && newc >= 0 && newc < n && grid[newr][newc] == 1) {
