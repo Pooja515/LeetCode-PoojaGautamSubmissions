@@ -8,30 +8,32 @@ class Solution {
             Arrays.fill(rows,-1);
         }
 
-        int res = f(n-1,amount,coins);
+        if (amount == 0)
+            return 0;
 
-        return  res >= (int) 1e9 ? -1:res;
+        return f(n - 1, amount, coins) >= (int) 1e9 ?-1: f(n - 1, amount, coins);
     }
 
-    int f(int i,int target,int[] coins){
+    int f(int i, int amount, int[] coins) {
 
-        if(target == 0) return 0;
-        if(i==0) {
-            if(target % coins[0] == 0) 
-                 return target/coins[0];
-            else
-                 return (int) 1e9;
+        if (amount == 0)
+            return 0;
+
+    if (i == 0) {
+            if (amount % coins[0] ==0) {
+                return amount / coins[0];
+            } else
+                return (int) 1e9;
         }
-        if(memo[i][target] != -1) return memo[i][target];
-        //nottake 
-        int nottake = 0 + f(i-1,target,coins);
+
+        if(memo[i][amount] != -1) return memo[i][amount];
+
         int take = (int) 1e9;
-        if(coins[i] <= target){
-            take = 1 + f(i,target-coins[i],coins);
+        if (coins[i] <= amount) {
+            take = 1 + f(i, amount - coins[i], coins);
         }
+        int nottake = 0 + f(i - 1, amount, coins);
 
-        return memo[i][target] = Math.min(take,nottake);
+        return memo[i][amount] = Math.min(take, nottake);
     }
-
-
 }
